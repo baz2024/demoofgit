@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import Navbar from '../components/Navbar';
@@ -7,15 +7,27 @@ import BreadcrumbsNav from '../components/BreadcrumbsNav';
 
 const Dashboard = () => {
   const [open, setOpen] = useState(false);
-  const rows = [
-    { id: 1, task: 'Finish report', status: 'Done' },
-    { id: 2, task: 'Update website', status: 'Pending' },
-  ];
+  const [rows, setRows] = useState([]);
+  
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/todos?_limit=1000')
+      .then(response => response.json())  
+      .then(data => setRows(data))
+      .catch(error => console.error('Error fetching data:', error));
+    }, []);
+  
   const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'task', headerName: 'Task', width: 200 },
-    { field: 'status', headerName: 'Status', width: 150 },
+    { field: 'title', headerName: 'Title', width: 300 },
+    { field: 'completed', headerName: 'Completed', width: 130, 
+      renderCell: (params) => (
+        params.value ? 'Yes' : 'No'
+      ),
+    },
   ];
+  
+
 
   return (
     <>
