@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Button, TextField, Container, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-
+import  { useAuth } from '../context/AuthContext';
 const Login = () => {
   const [username, setUsername] = useState('');
   const navigate = useNavigate();
-
+  const { login } = useAuth();
+  
   const handleLogin = () => {
     if (username) {
       localStorage.setItem('user', username);
